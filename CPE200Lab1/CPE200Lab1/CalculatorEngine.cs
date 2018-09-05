@@ -10,7 +10,7 @@ namespace CPE200Lab1
     {
  
  
-        public string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
+        public string calculate(int count,string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
         {
             switch (operate)
             {
@@ -50,12 +50,27 @@ namespace CPE200Lab1
                         int remainLength;
                         result = (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand) / 100);
                         parts = result.ToString().Split('.');
-                        if (parts[0].Length >= maxOutputSize)
+                        if (parts[0].Length > maxOutputSize)
                         {
                             return "E";
                         }
                         remainLength = maxOutputSize - parts[0].Length - 1;
                         secondOperand = result.ToString("N" + remainLength);
+                        if (count == 1)
+                        {
+                            return calculate(count, "+", firstOperand, secondOperand, maxOutputSize = 8);
+                        }else if (count == 2)
+                        {
+                            return calculate(count, "-", firstOperand, secondOperand, maxOutputSize = 8);
+                        }
+                        else if (count == 3)
+                        {
+                            return calculate(count, "X", firstOperand, secondOperand, maxOutputSize = 8);
+                        }
+                        else if (count == 4)
+                        {
+                            return calculate(count, "÷", firstOperand, secondOperand, maxOutputSize = 8);
+                        }
                     }
                     
                     break;

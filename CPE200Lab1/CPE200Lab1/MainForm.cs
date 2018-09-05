@@ -17,9 +17,11 @@ namespace CPE200Lab1
         private bool isAfterOperater;
         private bool isAfterEqual;
         private string firstOperand;
+        private string secondOperand;
         private string operate;
         private string mem;
         private Double memory;
+        int count ;
 
         private void resetAll()
         {
@@ -28,6 +30,7 @@ namespace CPE200Lab1
             hasDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
+            count = 0;
         }
         CalculatorEngine engine;
         public MainForm()
@@ -79,14 +82,27 @@ namespace CPE200Lab1
             switch (operate)
             {
                 case "+":
+                    count = 1;
+                    firstOperand = lblDisplay.Text;
+                    isAfterOperater = true;
+                    break;
                 case "-":
+                    count = 2;
+                    firstOperand = lblDisplay.Text;
+                    isAfterOperater = true;
+                    break;
                 case "X":
+                    count = 3;
+                    firstOperand = lblDisplay.Text;
+                    isAfterOperater = true;
+                    break;
                 case "÷":
+                    count = 4;
                     firstOperand = lblDisplay.Text;
                     isAfterOperater = true;
                     break;
                 case "%":
-                    firstOperand = lblDisplay.Text;
+                    secondOperand = firstOperand;
                     isAfterOperater = true;
                     break;
                 case "1/x":
@@ -108,7 +124,7 @@ namespace CPE200Lab1
                 return;
             }
             string secondOperand = lblDisplay.Text;
-            string result = engine.calculate(operate, firstOperand, secondOperand);
+            string result = engine.calculate(count,operate, firstOperand, secondOperand);
             if (result is "E" || result.Length > 8)
             {
                 lblDisplay.Text = "Error";
