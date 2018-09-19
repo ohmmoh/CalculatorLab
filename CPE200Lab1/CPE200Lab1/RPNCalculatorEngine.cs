@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
+using System.Collections;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,31 +9,59 @@ namespace CPE200Lab1
 {
     public class RPNCalculatorEngine : CalculatorEngine
     {
-        public string RPNProcess(string str)
+        public string Process(string str)
         {
-            string firstOp, secondOp;
-            string[] strArr = str.Split(' ');
             Stack rpnStack = new Stack();
-           
-                foreach(string s in strArr)
+            string firstOp, secondOp;
+            string[] strArray = str.Split(' ');
+            if (strArray.Length < 3)
+            {
+                return "E";
+            }
+            else if (isOperator(strArray[1]) || isOperator(strArray[0]))
+            {
+                return "E";
+            }
+            else
+            {
+                foreach (string s in strArray)
                 {
-                    Console.WriteLine(s);
+
+
                     if (isNumber(s))
                     {
                         rpnStack.Push(s);
                     }
-                    else if (isOperator(s))
+                    else if (rpnStack.Count > 1)
                     {
-                        firstOp = rpnStack.Pop().ToString();
-                        secondOp = rpnStack.Pop().ToString();
-                    rpnStack.Push(calculate(s, firstOp, secondOp));
+                        if (isOperator(s))
+                        {
+                            secondOp = rpnStack.Pop().ToString();
+                            firstOp = rpnStack.Pop().ToString();
+                            if (firstOp == null || secondOp == null)
+                            {
+                                return "E";
+                            }
+                            else
+                            {
+                                rpnStack.Push(calculate(s, firstOp, secondOp));
+                            }
+                        }
                     }
-                    
+                    else
+                    {
+                        return "E";
+                    }
                 }
-            
-            return "E";
+                if (rpnStack.Count == 1)
+                {
+                    return decimal.Parse(rpnStack.Peek().ToString()).ToString("G29");
+                }
+                else
+                {
+                    return "E";
+                }
+            }
         }
-        
-        
     }
 }
