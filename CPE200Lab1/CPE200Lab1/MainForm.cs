@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CPE200Lab1
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form,View
     {
-        protected SimplecalculatorEngine myEngine;
+        //protected SimplecalculatorEngine myEngine;
         protected string oper;
         protected bool hasDot;
         private bool isAllowBack;
@@ -21,7 +21,8 @@ namespace CPE200Lab1
         private string firstOperand;
         private string operate;
         private double memory;
-        
+        Controller controller;
+        Model model;
 
         private void resetAll()
         {
@@ -40,9 +41,16 @@ namespace CPE200Lab1
             InitializeComponent();
             memory = 0;
             myEngine = new SimplecalculatorEngine();
+            model = new CalModel();
+            controller = new CalController();
+            model.AttachObserver(this);
+            controller.AddModel(model);
             resetAll();
         }
-
+        public void Notify(Model m)
+        {
+            lblDisplay.Text = ((CalModel)m).Display();
+        }
         private void btnNumber_Click(object sender, EventArgs e)
         {
             if (lblDisplay.Text is "Error")

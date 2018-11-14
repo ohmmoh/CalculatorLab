@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace CPE200Lab1
 {
-    public partial class ExtendForm : Form
+    public partial class ExtendForm : Form,View
     {
         
         protected string oper;
@@ -18,13 +18,21 @@ namespace CPE200Lab1
         protected bool isContainDot = false;
         private bool isSpaceAllowed = false;
         protected RPNCalculatorEngine engine;
-
+        Controller controller;
+        Model model;
         public ExtendForm()
         {
             InitializeComponent();
             engine = new RPNCalculatorEngine();
+            controller = new Controller();
+            model = new Model();
+            model.AttachObserver(this);
+            controller.AddModel(model);
         }
-
+        public void Notify(Model m)
+        {
+            lblDisplay.Text = ((CalModel)m).Display();
+        }
         private bool isOperator(char ch)
         {
             switch(ch) {
